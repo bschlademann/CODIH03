@@ -1,3 +1,6 @@
+import random
+
+
 class TicTacToe():
     def __init__(self):
         # initiate board with 9 empty Strings
@@ -42,52 +45,63 @@ class TicTacToe():
 
         while not game_over:
             self.print_board()
+            # player's turn
+            if self.current_player == "X":
+                # input by player
+                try:
+                    # input() returns String, parse to int
+                    playerMove = int(
+                        input(
+                            f"Player {self.current_player}, choose a cell (1-9): ")
+                    )
+                    # parse player input to correct List index
+                    boardIndex = self.getBoardIndex(playerMove)
+                except ValueError as e:
+                    print(f"invalid input: {e}")
+                    # go back to staart of the loop
+                    continue
+            # ai's turn
+            else:
+                boardIndex = self.ai_random_move()
 
-            # input by user
-            try:
-                # input() returns String, parse to int
-                move = int(
-                    input(
-                        f"Player {self.current_player}, choose a cell (1-9): ")
-                )
-                # parse player input to correct List index
-                boardIndex = self.getBoardIndex(move)
-
-                # if cell is empty
-                if self.board[boardIndex] == " ":
-                    # fill cell with current_player-symbol
-                    self.board[boardIndex] = self.current_player
-                    # then check, if current_player has won
-                    result = self.has_winner()
-                    # result is true if tie is reached or board contains a wincondition
-                    if result:
-                        self.print_board()
-                        if result == "tie":
-                            print("the game ended in a tie")
-                        else:
-                            print(
-                                f"Player {result} won.")
-                        # end the game if someone won or a tie was reached
-                        game_over = True
+            # if cell is empty
+            if self.board[boardIndex] == " ":
+                # fill cell with current_player-symbol
+                self.board[boardIndex] = self.current_player
+                # then check, if current_player has won
+                result = self.has_winner()
+                # result is true if tie is reached or board contains a wincondition
+                if result:
+                    self.print_board()
+                    if result == "tie":
+                        print("the game ended in a tie")
                     else:
-                        # change player
-                        if self.current_player == "X":
-                            self.current_player = "O"
-                        else:
-                            self.current_player = "X"
+                        print(
+                            f"Player {result} won.")
+                    # end the game if someone won or a tie was reached
+                    game_over = True
                 else:
-                    # handle entry of occupied cell number
-                    print("cell already occupied, choose another cell")
-
-            except ValueError as e:
-                # catch invalid entries
-                print(f"invalid input: {e}")
+                    # change player
+                    if self.current_player == "X":
+                        self.current_player = "O"
+                    else:
+                        self.current_player = "X"
+            else:
+                # handle entry of occupied cell number
+                print("cell already occupied, choose another cell")
 
     def getBoardIndex(self, i: int):
         if 1 <= i <= 9:
             return i-1
         else:
             raise ValueError("only 1-9 are valid entries")
+
+    def ai_random_move(self):
+        # get all available moves
+        available_moves = [i for i, cell in enumerate(
+            self.board) if cell == " "]
+        # randomly select the index of a free cell
+        return random.choice(available_moves)
 
 
 game = TicTacToe()
