@@ -6,6 +6,14 @@ class TicTacToe():
         # initiate board with 9 empty Strings
         self.board = [" " for _ in range(9)]
         self.current_player = "X"
+        self.win_conditions = [
+            # horizontally
+            (0, 1, 2), (3, 4, 5), (6, 7, 8),
+            # vertically
+            (0, 3, 6), (1, 4, 7), (2, 5, 8),
+            # diagonally
+            (0, 4, 8), (2, 4, 6)
+        ]
 
     def print_board(self):
         print("\n")
@@ -17,16 +25,8 @@ class TicTacToe():
         print("\n")
 
     def has_winner(self):
-        win_conditions = [
-            # horizontally
-            (0, 1, 2), (3, 4, 5), (6, 7, 8),
-            # vertically
-            (0, 3, 6), (1, 4, 7), (2, 5, 8),
-            # diagonally
-            (0, 4, 8), (2, 4, 6)
-        ]
 
-        for a, b, c in win_conditions:
+        for a, b, c in self.win_conditions:
             # iterate over win_conditions, check if current board has 3 matching symbols in a row in any direction
             # {and self.board[a] != " "} is necessary to prevent the function to recognize 3 empty cells as a wincondition
             if self.board[a] == self.board[b] == self.board[c] and self.board[a] != " ":
@@ -62,7 +62,7 @@ class TicTacToe():
                     continue
             # ai's turn
             else:
-                boardIndex = self.ai_random_move()
+                boardIndex = self.get_ai_move()
 
             # if cell is empty
             if self.board[boardIndex] == " ":
@@ -102,6 +102,24 @@ class TicTacToe():
             self.board) if cell == " "]
         # randomly select the index of a free cell
         return random.choice(available_moves)
+
+    def get_ai_move(self):
+        # can (a)i win?
+        for a, b, c in self.win_conditions:
+            line = [self.board[a], self.board[b], self.board[c]]
+            if line.count("O") == 2 and line.count(" ") == 1:
+                indices = [a, b, c]
+                return indices[line.index(" ")]
+
+        # do (a)i need to block?
+        for a, b, c in self.win_conditions:
+            line = [self.board[a], self.board[b], self.board[c]]
+            if line.count("X") == 2 and line.count(" ") == 1:
+                indices = [a, b, c]
+                return indices[line.index(" ")]
+
+        # fallback: random move
+        return self.ai_random_move()
 
 
 game = TicTacToe()
