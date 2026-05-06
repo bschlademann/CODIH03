@@ -262,7 +262,8 @@ class TicTacToe():
                 # change player
                 self.current_player = "O" if self.current_player == "X" else "X"
                 
-        print(f"{p1_name:10} vs {p2_name:10} | {p1_name} wins: {wins_p1:4} | {p2_name} wins: {wins_p2:4} | Ties: {ties:4}")
+        # print(f"{p1_name:10} vs {p2_name:10} | {p1_name} wins: {wins_p1:4} | {p2_name} wins: {wins_p2:4} | Ties: {ties:4}")
+        print(f"{p1_name:25} vs {p2_name:25} | P1 wins: {wins_p1:4} | P2 wins: {wins_p2:4} | Ties: {ties:4}")
 
     def run_all_comparisons(self, games: int = 1000):
         print(f"--- full simulation matrix ({games} games per matchup) ---")
