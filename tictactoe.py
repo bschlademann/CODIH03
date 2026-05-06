@@ -73,7 +73,7 @@ class TicTacToe():
                     continue
             # ai's turn
             else:
-                boardIndex = self.get_ai_smart_move()
+                boardIndex = self.get_ai_newell_simon_move()
 
             # if cell is empty
             if self.board[boardIndex] == " ":
@@ -159,7 +159,7 @@ class TicTacToe():
         # fallback: random move
         return self.get_ai_random_move()
 
-    def get_ai_smart_move(self):
+    def get_ai_newell_simon_move(self):
         available_moves = self.get_available_moves()
 
         # priority 1 & 2: win or block
@@ -271,13 +271,13 @@ class TicTacToe():
                               "simple", self.get_ai_win_or_block_or_random_move, games)
 
         self.simulate_matchup("simple", self.get_ai_win_or_block_or_random_move,
-                              "smart", self.get_ai_smart_move, games)
+                              "newell simon", self.get_ai_newell_simon_move, games)
 
         self.simulate_matchup("random", self.get_ai_random_move,
-                              "Smart", self.get_ai_smart_move, games)
+                              "newell simon", self.get_ai_newell_simon_move, games)
 
-        self.simulate_matchup("smart", self.get_ai_smart_move,
-                              "smart", self.get_ai_smart_move, games)
+        self.simulate_matchup("newell simon", self.get_ai_newell_simon_move,
+                              "newell simon", self.get_ai_newell_simon_move, games)
         
         self.clear_board()
 
