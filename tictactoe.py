@@ -47,13 +47,43 @@ class TicTacToe:
         return False
 
     def play(self):
-        print("tic-tac-toe: you are playing against the q-learning ai")
-        print("commands: 'q' to quit, 'r' to restart")
-        game_over = False
+        # main interactive game loop for human vs selected ai
+        print("--- tic-tac-toe ---")
+        
+        # loop until the user provides a valid ai selection
+        selected_ai = None
+        while selected_ai is None:
+            print(f"""
+                  choose your opponent:
+                  1. random ai (easy)
+                  2. simple ai (win/block)
+                  3. newell simon ai (heuristic expert)
+                  4. q-learning ai (reinforment learning ai)                  
+                  """)
+      
+            choice = input("select (1-4): ").strip()
+            
+            # map input to ai logic profiles
+            ai_options = {
+                "1": self.get_ai_random_move,
+                "2": self.get_ai_win_or_block_move,
+                "3": self.get_ai_newell_simon_move,
+                "4": self.get_ai_q_move
+            }
+            
+            if choice in ai_options:
+                selected_ai = ai_options[choice]
+            else:
+                # handle user input other than 1-4
+                print(f"\n'{choice}' is not a valid choice. please enter a number between 1 and 4.\n")
 
+        print(f"\ncommands: 'q' to quit, 'r' to restart")
+        
+        game_over = False
         while not game_over:
             self.print_board()
             if self.current_player == "X":
+                # handle human user move input
                 user_input = input(
                     f"player {self.current_player}, choose a cell (1-9): ").lower().strip()
                 if user_input == 'q':
@@ -67,8 +97,10 @@ class TicTacToe:
                     print(f"invalid input: {e}")
                     continue
             else:
-                board_index = self.get_ai_q_move()
+                # use the specific ai logic chosen at the start
+                board_index = selected_ai()
 
+            # validate cell availability and update game state
             if self.board[board_index] == " ":
                 self.board[board_index] = self.current_player
                 result = self.has_winner()
@@ -79,15 +111,17 @@ class TicTacToe:
                     else:
                         print(f"player {result} won.")
 
+                    # check if player wants another round or to exit
                     if input("play again? (y/n): ").lower().strip() == 'y':
                         self.clear_board()
                     else:
                         game_over = True
                 else:
+                    # switch turns between human (X) and ai (O)
                     self.current_player = "O" if self.current_player == "X" else "X"
             else:
                 print("cell already occupied!")
-
+  
     def get_board_index(self, i: int) -> int:
         if 1 <= i <= 9:
             return i-1
@@ -303,3 +337,4 @@ class TicTacToe:
 game = TicTacToe()
 # game.train_ai()
 game.run_all_comparisons()
+game.play()
