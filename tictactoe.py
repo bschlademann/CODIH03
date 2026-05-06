@@ -265,19 +265,22 @@ class TicTacToe():
         print(f"{p1_name:10} vs {p2_name:10} | {p1_name} wins: {wins_p1:4} | {p2_name} wins: {wins_p2:4} | Ties: {ties:4}")
 
     def run_all_comparisons(self, games: int = 1000):
-        print(f"--- simulation ({games} games) ---")
+        print(f"--- full simulation matrix ({games} games per matchup) ---")
 
-        self.simulate_matchup("random", self.get_ai_random_move,
-                              "simple", self.get_ai_win_or_block_or_random_move, games)
+        # define all available ai profiles
+        profiles: list[tuple[str, Callable[[], int]]] = [
+            ("random", self.get_ai_random_move),
+            ("simple", self.get_ai_win_or_block_or_random_move),
+            ("newell simon", self.get_ai_newell_simon_move),
+        ]
 
-        self.simulate_matchup("simple", self.get_ai_win_or_block_or_random_move,
-                              "newell simon", self.get_ai_newell_simon_move, games)
-
-        self.simulate_matchup("random", self.get_ai_random_move,
-                              "newell simon", self.get_ai_newell_simon_move, games)
-
-        self.simulate_matchup("newell simon", self.get_ai_newell_simon_move,
-                              "newell simon", self.get_ai_newell_simon_move, games)
+        # nested loops to test every profile in both offensive and defensive roles
+        for p1_name, p1_logic in profiles:
+            for p2_name, p2_logic in profiles:
+                off_name = f"{p1_name} (Offensive)"
+                def_name = f"{p2_name} (Defensive)"
+                
+                self.simulate_matchup(off_name, p1_logic, def_name, p2_logic, games)
         
         self.clear_board()
 
