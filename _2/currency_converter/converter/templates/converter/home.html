@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <input type="number" name="amount" value="{{ amount }}" step="0.01" required>
+    
+    <select name="from_currency_id">
+        {% for currency in currencies %}
+            <option value="{{ currency.id }}" {% if currency.id == from_id %}selected{% endif %}>
+                {{ currency.currency_code }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <span> to </span>
+
+    <select name="to_currency_id">
+        {% for currency in currencies %}
+            <option value="{{ currency.id }}" {% if currency.id == to_id %}selected{% endif %}>
+                {{ currency.currency_code }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Convert</button>
+</form>
+
+{% if result != None %}
+    <h3>Result: {{ result|stringformat:".2f" }}</h3>
+{% endif %}
+{% endblock %}
