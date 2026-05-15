@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Current Exchange Rates</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Currency Code</th>
+            <th>Rate (1 EUR =)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for currency in currencies %}
+        <tr>
+            <td>{{ currency.currency_code }}</td>
+            <td>{{ currency.exchange_rate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

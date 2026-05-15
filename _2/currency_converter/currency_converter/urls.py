@@ -15,10 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import URLPattern, URLResolver, path
+from converter import views
 from converter.views import converter_home
 
-urlpatterns = [
+urlpatterns: list[URLPattern | URLResolver] = [
     path('admin/', admin.site.urls),
-    path('', converter_home, name='home'), # Root URL
+    path('', converter_home, name='home'), # root url
+    path('rates/', views.rates_list, name='rates_list'), # second url
 ]

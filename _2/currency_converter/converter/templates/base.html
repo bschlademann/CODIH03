@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
+    <title>Currency App</title>
+    <style>
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { padding: 10px; border: 1px solid #ccc; text-decoration: none; color: black; }
+        .active { background-color: #eee; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>{% block headline %}Currency Converter{% endblock %}</h1>
-    </header>
+    <h1>{% block headline %}Currency Converter{% endblock %}</h1>
+    
+    <nav class="tabs">
+        <a href="{% url 'home' %}" class="tab">Converter</a>
+        <a href="{% url 'rates_list' %}" class="tab">Exchange Rates</a>
+    </nav>
+
     <main>
         {% block content %}{% endblock %}
     </main>
